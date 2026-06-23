@@ -189,8 +189,8 @@ COS737-Exam-Timetabling-CSP/
 
 | Author | Role | Main Contributions |
 |---|---|---|
-| **Rolande Solomons** | CSP & Basic Solver Lead | CSP formulation, data model, constraint checker, simple backtracking solver, timetable output, and text file generation. |
-| **Raeez Ahmed** | Search Strategy & Testing Lead | MRV, Forward Checking, experiment runner, performance comparison, search-step analysis, and over-constrained testing. |
+| **Rolande Solomons** | CSP & Basic Solver Lead | CSP formulation, data model, constraint checker, simple backtracking solver, timetable output, text file generation, report formatting and demo video support. |
+| **Raeez Ahmed** | Search Strategy & Testing Lead | MRV, Forward Checking, experiment runner, performance comparison, search-step analysis, over-constrained testing and demo video support. |
 | **Mohamed Yusuf Kathree** | Dashboard, Visualiser & Ontology Lead | Streamlit dashboard, GUI output, search tree visualiser, screenshots, ontology design, and demo video support. |
 
 All members contributed to the final report, testing, documentation, and project presentation.
