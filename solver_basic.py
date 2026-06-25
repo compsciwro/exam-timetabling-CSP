@@ -1,7 +1,7 @@
 from csp_data import OVERLAPS
 from csp_data import EXAMS, generate_domains
 from utils import write_timetable_to_file
-
+#
 
 def is_valid(exam_name, candidate, assignment):
     """
