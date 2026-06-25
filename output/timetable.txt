@@ -1,0 +1,10 @@
+CSC711 -> T1, HallA
+CSC712 -> T2, HallA
+CSC713 -> T1, Lab1
+CSC714 -> T2, HallB
+CSC715 -> T2, Lab1
+MAT701 -> T3, HallA
+STA701 -> T1, HallB
+PHY701 -> T3, HallB
+
+Search steps: 27
