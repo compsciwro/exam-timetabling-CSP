@@ -1,14 +1,15 @@
-from csp_data import OVERLAPS
+from csp_data import OVERLAPS as DefaultOL
 from csp_data import EXAMS, generate_domains
 from utils import write_timetable_to_file
 #
 
-def is_valid(exam_name, candidate, assignment):
+def is_valid(exam_name, candidate, assignment, overlaps = None):
     """
     Checks whether assigning `candidate` (a (time, venue) tuple) to
     `exam_name` violates any constraint, given the exams already
     assigned in `assignment` (a dict: exam_name -> (time, venue)).
     """
+    overlaps = overlaps if overlaps is not None else DefaultOL
     candidate_time, candidate_venue = candidate
 
     for other_exam, other_value in assignment.items():
@@ -16,7 +17,7 @@ def is_valid(exam_name, candidate, assignment):
 
         # C3-C10: overlap/clash constraints
         # Check both orderings since OVERLAPS stores pairs once
-        pair_clashes = (exam_name, other_exam) in OVERLAPS or (other_exam, exam_name) in OVERLAPS
+        pair_clashes = (exam_name, other_exam) in overlaps or (other_exam, exam_name) in overlaps
         if pair_clashes and candidate_time == other_time:
             return False
 
