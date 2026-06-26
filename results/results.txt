@@ -1,0 +1,6 @@
+Scenario             Simple Backtracking          MRV Forward Checking
+----------------------------------------------------------------------
+Small Instance       12 (Solution Found) 12 (Solution Found)   5 (Solution Found)
+Full Instance        27 (Solution Found) 28 (Solution Found)   8 (Solution Found)
+Extended Instance    37 (Solution Found) 38 (Solution Found)  10 (Solution Found)
+Over-Constrained Instance 2276 (No Solution) 260 (No Solution)    520 (No Solution)

@@ -5,10 +5,10 @@ from csp_data import(
 from solver_basic import is_valid
 
 
-def _backtrack_hlp(assigned, domains, examOrder, counter, overlaps):
+def _backtrack_hlp(assigned, domains, examOrder, counter, overlaps, log_fn=None):
     if len(assigned) == len(examOrder):
         return assigned
-    
+
     examCurrent = examOrder[len(assigned)]
 
     for value in domains[examCurrent]:
@@ -16,24 +16,34 @@ def _backtrack_hlp(assigned, domains, examOrder, counter, overlaps):
 
         if is_valid(examCurrent, value, assigned, overlaps):
             assigned[examCurrent] = value
-            result = _backtrack_hlp(assigned, domains, examOrder, counter, overlaps)
+            if log_fn:
+                log_fn({"exam": examCurrent, "value": str(value),
+                        "step": counter[0], "status": "success"})
+            result = _backtrack_hlp(assigned, domains, examOrder, counter, overlaps, log_fn)
             if result is not None:
                 return result
+            if log_fn:
+                log_fn({"exam": examCurrent, "value": str(value),
+                        "step": counter[0], "status": "backtrack"})
             del assigned[examCurrent]
-    
+        else:
+            if log_fn:
+                log_fn({"exam": examCurrent, "value": str(value),
+                        "step": counter[0], "status": "fail"})
+
     return None
 
-def S_backtracking(exams, overlaps, time_slots = None, written_venues = None): #check var names before submission
+def S_backtracking(exams, overlaps, time_slots=None, written_venues=None, log_fn=None): #check var names before submission
 
     assigned = {}
-    domains = generate_domains(exams, time_slots = time_slots, written_venues = written_venues)
+    domains = generate_domains(exams, time_slots=time_slots, written_venues=written_venues)
     examOrder = list(exams.keys()) #COMEBACK AND CHECK BEFORE SUBMISSION
     counter = [0]
 
-    result = _backtrack_hlp(assigned, domains, examOrder, counter, overlaps)
+    result = _backtrack_hlp(assigned, domains, examOrder, counter, overlaps, log_fn)
     return result, counter[0]
 
-def _mrv_backtrack_hlp(assigned, domains, counter, overlaps):
+def _mrv_backtrack_hlp(assigned, domains, counter, overlaps, log_fn=None):
     if len(assigned) == len(domains):
         return assigned
     #check before submission
@@ -48,23 +58,33 @@ def _mrv_backtrack_hlp(assigned, domains, counter, overlaps):
         #rewrite
         if is_valid(examCurrent, value, assigned, overlaps):
             assigned[examCurrent] = value
-            result = _mrv_backtrack_hlp(assigned, domains, counter, overlaps)
+            if log_fn:
+                log_fn({"exam": examCurrent, "value": str(value),
+                        "step": counter[0], "status": "success"})
+            result = _mrv_backtrack_hlp(assigned, domains, counter, overlaps, log_fn)
             if result is not None:
                 return result
+            if log_fn:
+                log_fn({"exam": examCurrent, "value": str(value),
+                        "step": counter[0], "status": "backtrack"})
             del assigned[examCurrent]
+        else:
+            if log_fn:
+                log_fn({"exam": examCurrent, "value": str(value),
+                        "step": counter[0], "status": "fail"})
 
     return None
 #rewrite
-def mrv_backtracking(exams, overlaps, time_slots = None, written_venues = None):
+def mrv_backtracking(exams, overlaps, time_slots=None, written_venues=None, log_fn=None):
     assigned = {}
-    domains = generate_domains(exams, time_slots = time_slots, written_venues = written_venues)
+    domains = generate_domains(exams, time_slots=time_slots, written_venues=written_venues)
     counter = [0]
 
-    result = _mrv_backtrack_hlp(assigned, domains, counter, overlaps)
+    result = _mrv_backtrack_hlp(assigned, domains, counter, overlaps, log_fn)
     return result, counter[0]
 
 #redo entire forward checking function, make sure to check variable names before submission
-def _Forward_checking_hlp(assigned, currentDomains, examOrder, counter, overlaps):
+def _Forward_checking_hlp(assigned, currentDomains, examOrder, counter, overlaps, log_fn=None):
     if len(assigned) == len(examOrder):
         return assigned
 
@@ -75,6 +95,9 @@ def _Forward_checking_hlp(assigned, currentDomains, examOrder, counter, overlaps
 
         if is_valid(examCurrent, value, assigned, overlaps):
             assigned[examCurrent] = value
+            if log_fn:
+                log_fn({"exam": examCurrent, "value": str(value),
+                        "step": counter[0], "status": "success"})
 
             savedDomains = {}
             DeadEnd = False
@@ -87,24 +110,31 @@ def _Forward_checking_hlp(assigned, currentDomains, examOrder, counter, overlaps
                     break
 
             if not DeadEnd:
-                result = _Forward_checking_hlp(assigned, currentDomains, examOrder, counter, overlaps)
+                result = _Forward_checking_hlp(assigned, currentDomains, examOrder, counter, overlaps, log_fn)
                 if result is not None:
                     return result
-                
+
+            if log_fn:
+                log_fn({"exam": examCurrent, "value": str(value),
+                        "step": counter[0], "status": "backtrack"})
             for other, domain in savedDomains.items():
                 currentDomains[other] = domain
 
             del assigned[examCurrent]
+        else:
+            if log_fn:
+                log_fn({"exam": examCurrent, "value": str(value),
+                        "step": counter[0], "status": "fail"})
 
     return None
 
-def forward_checking(exams, overlaps, time_slots = None, written_venues = None):
+def forward_checking(exams, overlaps, time_slots=None, written_venues=None, log_fn=None):
     assigned = {}
-    currentDomains = generate_domains(exams, time_slots = time_slots, written_venues = written_venues)
+    currentDomains = generate_domains(exams, time_slots=time_slots, written_venues=written_venues)
     examOrder = list(exams.keys())
     counter = [0]
 
-    result = _Forward_checking_hlp(assigned, currentDomains, examOrder, counter, overlaps)
+    result = _Forward_checking_hlp(assigned, currentDomains, examOrder, counter, overlaps, log_fn)
     return result, counter[0]
 
 if __name__ == "__main__":
