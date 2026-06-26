@@ -33,8 +33,51 @@ OVERLAPS = [
     ("STA701", "PHY701"),
 ]
 
+SMALL_INSTANCE = {
+    "CSC711": {"student_count": 70, "type": "Written"},
+    "CSC712": {"student_count": 55, "type": "Written"},
+    "CSC713": {"student_count": 35, "type": "Computer based"},
+    "CSC714": {"student_count": 40, "type": "Written"},
+    "CSC715": {"student_count": 25, "type": "Computer based"},
+}
 
-def generate_domains():
+SMALL_OVERLAPS = [
+    ("CSC711", "CSC712"),
+    ("CSC713", "CSC714"),
+]
+
+EXTENDED_INSTANCE = {
+    "CSC711": {"student_count": 70, "type": "Written"},
+    "CSC712": {"student_count": 55, "type": "Written"},
+    "CSC713": {"student_count": 35, "type": "Computer based"},
+    "CSC714": {"student_count": 40, "type": "Written"},
+    "CSC715": {"student_count": 25, "type": "Computer based"},
+    "MAT701": {"student_count": 60, "type": "Written"},
+    "STA701": {"student_count": 45, "type": "Written"},
+    "PHY701": {"student_count": 30, "type": "Written"},
+    "ENG701": {"student_count": 50, "type": "Written"},
+    "CSC716": {"student_count": 30, "type": "Computer based"},
+}
+
+EXTENDED_OVERLAPS = [
+    ("CSC711", "CSC712"),
+    ("CSC711", "MAT701"),
+    ("CSC712", "STA701"),
+    ("CSC713", "CSC714"),
+    ("CSC714", "MAT701"),
+    ("CSC715", "PHY701"),
+    ("MAT701", "STA701"),
+    ("STA701", "PHY701"),
+    ("ENG701", "CSC712"),
+    ("ENG701", "PHY701"),
+    ("CSC716", "CSC711"),
+    ("CSC716", "CSC714"),
+]
+
+OVERCONSTRAINED_INSTANCE = ["T1", "T2", "T3", "T4"]
+
+
+def generate_domains(exams = None, venues = None, time_slots = None, written_venues = None):
     """
     Builds the domain of valid (TimeSlot, Venue) pairs for every exam.
 
@@ -43,16 +86,22 @@ def generate_domains():
         C1: if exam.type == "Computer based" -> venue must be Lab1
         C2: exam.student_count <= venue.capacity
     """
+    exams = exams or EXAMS
+    venues = venues or VENUES
+    time_slots = time_slots or TIME_SLOTS
     domains = {}
 
-    for exam_name, exam_info in EXAMS.items():
+    for exam_name, exam_info in exams.items():
         valid_pairs = []
 
-        for time_slot in TIME_SLOTS:
-            for venue_name, venue_info in VENUES.items():
+        for time_slot in time_slots:
+            for venue_name, venue_info in venues.items():
 
                 # C1: computer-based exams can only go in Lab1
                 if exam_info["type"] == "Computer based" and venue_name != "Lab1":
+                    continue
+                
+                if written_venues and exam_info["type"] == "Written" and venue_name not in written_venues:
                     continue
 
                 # C2: venue must have enough capacity
