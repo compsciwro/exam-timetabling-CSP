@@ -1,5 +1,3 @@
-# csp_data.py
-# CSP data model for the Exam Timetabling problem (COS737)
 # Stores exams, venues, time slots, overlap pairs, and generates
 # valid domains for each exam (with unary constraints C1, C2 pre-applied).
 

@@ -1,7 +1,4 @@
-# app.py
-# COS737 Exam Timetabling CSP — Full Streamlit Dashboard
-# Member 3: Mohamed Yusuf Kathree
-#
+# Dashboard
 # Tabs:
 #   1. Timetable       — select instance + strategy, view the generated timetable
 #   2. Performance     — step-count comparison table across all instances + strategies
@@ -21,11 +18,11 @@ from csp_data import (
 from solver_advanced import S_backtracking, mrv_backtracking, forward_checking
 from tree_visualiser import build_graph, build_legend, get_divergence_info
 
-# — Page config ———————————————————————————————————————————————————————————————
+# Page config 
 
 st.set_page_config(page_title="Exam Timetabling CSP", layout="wide")
 
-# — Global CSS ————————————————————————————————————————————————————————————————
+# Global CSS 
 
 st.markdown("""
 <style>
@@ -86,7 +83,7 @@ table.timetable th { background-color: #102a4c; color: #6fb7ff; }
 </style>
 """, unsafe_allow_html=True)
 
-# — Constants —————————————————————————————————————————————————————————————————
+# Constants 
 
 SLOT_INFO = {
     "T1": ("Monday",    "09:00"),
@@ -137,7 +134,7 @@ INSTANCE_KEYS = {
     "Extended Instance": "extended",
 }
 
-# — Cached solver calls ———————————————————————————————————————————————————————
+# Cached solver calls 
 
 @st.cache_data
 def run_solver(strategy_name, instance_name):
@@ -200,7 +197,7 @@ def load_search_logs():
         return []
 
 
-# — Helper: render timetable grid —————————————————————————————————————————————
+# Helper: render timetable grid 
 
 def render_timetable(assignment):
     """Renders the timetable HTML grid. assignment is {exam: (slot, venue)} or None."""
@@ -241,7 +238,7 @@ def render_timetable(assignment):
     st.markdown(html, unsafe_allow_html=True)
 
 
-# — Page header ———————————————————————————————————————————————————————————————
+# Page header 
 
 st.markdown('<div class="main-title">Exam Timetabling CSP</div>', unsafe_allow_html=True)
 st.markdown(
@@ -250,7 +247,7 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-# — Tabs ——————————————————————————————————————————————————————————————————————
+# Tabs 
 
 tab1, tab2, tab3, tab4 = st.tabs([
     "Timetable",
@@ -259,9 +256,9 @@ tab1, tab2, tab3, tab4 = st.tabs([
     "Search Tree",
 ])
 
-# ————————————————————————————————————————————————————————————————————————————
+ 
 # TAB 1 — TIMETABLE
-# ————————————————————————————————————————————————————————————————————————————
+
 with tab1:
     st.markdown('<div class="panel">', unsafe_allow_html=True)
     st.markdown('<div class="panel-title">SOLVER CONFIGURATION</div>', unsafe_allow_html=True)
@@ -289,9 +286,9 @@ with tab1:
         unsafe_allow_html=True,
     )
 
-# ————————————————————————————————————————————————————————————————————————————
+
 # TAB 2 — PERFORMANCE COMPARISON
-# ————————————————————————————————————————————————————————————————————————————
+
 with tab2:
     st.markdown('<div class="panel">', unsafe_allow_html=True)
     st.markdown('<div class="panel-title">PERFORMANCE COMPARISON — SEARCH STEPS</div>',
@@ -318,9 +315,9 @@ with tab2:
     )
     st.markdown('</div>', unsafe_allow_html=True)
 
-# ————————————————————————————————————————————————————————————————————————————
+
 # TAB 3 — OVER-CONSTRAINED CASE
-# ————————————————————————————————————————————————————————————————————————————
+
 with tab3:
     st.markdown('<div class="panel">', unsafe_allow_html=True)
     st.markdown('<div class="panel-title">OVER-CONSTRAINED INSTANCE ANALYSIS</div>',
@@ -356,9 +353,9 @@ with tab3:
     )
     st.markdown('</div>', unsafe_allow_html=True)
 
-# ————————————————————————————————————————————————————————————————————————————
+
 # TAB 4 — SEARCH TREE VISUALISER
-# ————————————————————————————————————————————————————————————————————————————
+
 with tab4:
     st.markdown('<div class="panel">', unsafe_allow_html=True)
     st.markdown('<div class="panel-title">SEARCH TREE VISUALISER</div>', unsafe_allow_html=True)
@@ -432,7 +429,7 @@ with tab4:
             legend = build_legend()
             st.graphviz_chart(legend.source)
 
-        # — Divergence analysis ———————————————————————————————————————————
+        # Divergence analysis 
         st.markdown("---")
         st.markdown("#### Strategy Divergence Analysis")
         st.markdown(
