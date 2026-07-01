@@ -4,8 +4,10 @@ from csp_data import(
 )
 from solver_basic import is_valid
 
-#Simple Search Strategy: Simple Backtracking
 #The below simple backtracking function is adpated from Russell and Norvig's textbooks pseudocode for backtracking search.
+# as well as the theory for the complex search strategies
+
+#Simple Search Strategy: Simple Backtracking
 #assigned parameter: dictionary of assigned exams and their values
 #domains parameter: dictionary of all exams and their possible values
 #examOrder parameter: list of exams in a fixed order
@@ -61,7 +63,7 @@ def S_backtracking(exams, overlaps, time_slots=None, written_venues=None, log_fn
     result = _backtrack_hlp(assigned, domains, examOrder, counter, overlaps, log_fn)
     return result, counter[0]
 
-#Complex Search Strategy 1: MRV with Degree heuristic + BT
+#Complex Search Strategy 1: Backtracking with MRV heuristic + Degree heuristic
 def _mrv_backtrack_hlp(assigned, domains, counter, overlaps, log_fn=None):
     #if every exam has an assigned value, the timetable is complete
     if len(assigned) == len(domains):
@@ -122,10 +124,11 @@ def mrv_backtracking(exams, overlaps, time_slots=None, written_venues=None, log_
     domains = generate_domains(exams, time_slots=time_slots, written_venues=written_venues)
     counter = [0]
 
+    #calls the above function to find a solution
     result = _mrv_backtrack_hlp(assigned, domains, counter, overlaps, log_fn)
     return result, counter[0]
 
-#Complex Search Strategy 2: Forward Checking
+#Complex Search Strategy 2: Backtracking with Forward Checking
 def _Forward_checking_hlp(assigned, currentDomains, examOrder, counter, overlaps, log_fn=None):
      #if every exam has an assigned value, the timetable is complete
     if len(assigned) == len(examOrder):
@@ -134,37 +137,43 @@ def _Forward_checking_hlp(assigned, currentDomains, examOrder, counter, overlaps
     #gets the next exam in line thats not been assigned.
     examCurrent = examOrder[len(assigned)]
 
-    
+    #try every possible value in the current exam's domains
     for value in list(currentDomains[examCurrent]):
         counter[0] += 1
 
+        #uses is_valid function from solver_basic to check if the chosen value has any clashes
         if is_valid(examCurrent, value, assigned, overlaps):
             assigned[examCurrent] = value
             if log_fn:
                 log_fn({"exam": examCurrent, "value": str(value),
                         "step": counter[0], "status": "success"})
 
-            savedDomains = {}
-            DeadEnd = False
+            savedDomains = {} #backup of the domains so that we can comeback after pruning 
+            DeadEnd = False #tracks when an exam runs out of values
+
+            #goes through every unassigned exam 
             for other in [exam for exam in examOrder if exam not in assigned]:
-                savedDomains[other] = list(currentDomains[other])
+                savedDomains[other] = list(currentDomains[other]) #saves current domain for backtracking purposes
+                #keeps legal values only
                 currentDomains[other] = [v for v in currentDomains[other] if is_valid(other, v, assigned, overlaps)]
 
+                #if this exam has no legal options left, mark this value as a deadend to cancel the recursion
                 if not currentDomains[other]:
                     DeadEnd = True
                     break
-
+            #only go further if exam domain is not empty
             if not DeadEnd:
                 result = _Forward_checking_hlp(assigned, currentDomains, examOrder, counter, overlaps, log_fn)
                 if result is not None:
-                    return result
+                    return result #solution found
 
             if log_fn:
                 log_fn({"exam": examCurrent, "value": str(value),
                         "step": counter[0], "status": "backtrack"})
+            #put the saved domains back so a new value can start from the prevosuly saved domains
             for other, domain in savedDomains.items():
                 currentDomains[other] = domain
-
+            #delete the exam's current assignment
             del assigned[examCurrent]
         else:
             if log_fn:
@@ -180,5 +189,13 @@ def forward_checking(exams, overlaps, time_slots=None, written_venues=None, log_
     examOrder = list(exams.keys())
     counter = [0]
 
+    #calls the above function to find a solution
     result = _Forward_checking_hlp(assigned, currentDomains, examOrder, counter, overlaps, log_fn)
     return result, counter[0]
+
+#used to help code and for understanding::
+#the russell and norvig textbook
+#https://github.com/aimacode/aima-python/blob/master/aima/csp.py
+#https://simpleai.readthedocs.io/en/latest/_modules/simpleai/search/csp.html
+#https://www.cs.cmu.edu/~15281/coursenotes/constraints/
+#Claude for debugging and to help understand MRV/forward checking
