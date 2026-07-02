@@ -42,7 +42,7 @@ with open("results/results.txt", "w") as f:
 print("\nResults written to results.txt")
 
 #used to help code :
-#claude for debugging and assisstance in understading how to set up the for loops
 #https://www.w3schools.com/python/python_tuples.asp
 #https://www.geeksforgeeks.org/python/writing-to-file-in-python/
 #https://www.geeksforgeeks.org/python/create-a-directory-in-python/
+#claude for debugging and assisstance in understading how to set up the for loops
