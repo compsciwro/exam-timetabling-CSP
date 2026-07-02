@@ -107,3 +107,14 @@ class TreeLogger:
         print(f"[tree_logger] Saved {len(self.nodes)} nodes — {path}")
         print(f"              strategy={strategy}, instance={instance}, "
               f"solved={solved}, steps={total_steps}")
+        
+# References:
+# [1] S. J. Russell and P. Norvig, Artificial Intelligence: A Modern Approach,
+#     4th ed. Pearson, 2021. Ch. 6 — Search tree structure and node
+#     representation during backtracking search.
+# [2] Python Software Foundation, "json — JSON encoder and decoder,"
+#     Python 3.x Documentation. [Online]. Available:
+#     https://docs.python.org/3/library/json.html
+# [3] Python Software Foundation, "os.path — common pathname manipulations,"
+#     Python 3.x Documentation. [Online]. Available:
+#     https://docs.python.org/3/library/os.path.html

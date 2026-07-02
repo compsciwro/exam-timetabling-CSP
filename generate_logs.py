@@ -40,3 +40,13 @@ if __name__ == "__main__":
         logger.save(strategy, instance, result is not None, steps, path=LOG_PATH)
 
     print(f"\nDone. All 12 runs saved to {LOG_PATH}")
+# References:
+# [1] S. J. Russell and P. Norvig, Artificial Intelligence: A Modern Approach,
+#     4th ed. Pearson, 2021. Ch. 6 — Search strategies used across all
+#     instances: backtracking, MRV, and forward checking.
+# [2] Python Software Foundation, "json — JSON encoder and decoder,"
+#     Python 3.x Documentation. [Online]. Available:
+#     https://docs.python.org/3/library/json.html
+# [3] Python Software Foundation, "os.path — common pathname manipulations,"
+#     Python 3.x Documentation. [Online]. Available:
+#     https://docs.python.org/3/library/os.path.html

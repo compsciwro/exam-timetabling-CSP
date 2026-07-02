@@ -131,3 +131,13 @@ def _make_label(node):
         .replace(", ", "\n")
     )
     return f"{node['exam']}\n{value_clean}\nstep {node['step']}"
+
+# References:
+# [1] J. Ellson, E. R. Gansner, L. Koutsofios, S. C. North, and G. Woodhull,
+#     "Graphviz — open source graph drawing tools," Lecture Notes in Computer
+#     Science, vol. 2265, pp. 483-484, Springer, 2002.
+# [2] xflr6, "Graphviz — simple Python interface for Graphviz," Read the Docs,
+#     2026. [Online]. Available: https://graphviz.readthedocs.io/en/stable/manual.html
+# [3] S. J. Russell and P. Norvig, Artificial Intelligence: A Modern Approach,
+#     4th ed. Pearson, 2021. Ch. 6 — Search tree concepts used for
+#     node classification (success, fail, backtrack).

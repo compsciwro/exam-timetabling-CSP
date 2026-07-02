@@ -477,3 +477,18 @@ with tab4:
             st.warning("Run generate_logs.py first to enable divergence analysis.")
 
     st.markdown('</div>', unsafe_allow_html=True)
+
+# References:
+# [1] Streamlit Inc., "Streamlit documentation," 2026. [Online].
+#     Available: https://docs.streamlit.io/
+# [2] Streamlit Inc., "Get started with Streamlit," 2026. [Online].
+#     Available: https://docs.streamlit.io/get-started
+# [3] J. Ellson, E. R. Gansner, L. Koutsofios, S. C. North, and G. Woodhull,
+#     "Graphviz — open source graph drawing tools," Lecture Notes in Computer
+#     Science, vol. 2265, pp. 483-484, Springer, 2002.
+# [4] xflr6, "Graphviz — simple Python interface for Graphviz," Read the Docs,
+#     2026. [Online]. Available: https://graphviz.readthedocs.io/en/stable/manual.html
+# [5] Python Software Foundation, "json — JSON encoder and decoder,"
+#     Python 3.x Documentation. [Online]. Available:
+#     https://docs.python.org/3/library/json.html
+#claude for debugging and assisstance with the dashboard design and layout, and for help with the streamlit code and styling.
