@@ -4,11 +4,7 @@ from utils import write_timetable_to_file
 #
 
 def is_valid(exam_name, candidate, assignment, overlaps = None):
-    """
-    Checks whether assigning `candidate` (a (time, venue) tuple) to
-    `exam_name` violates any constraint, given the exams already
-    assigned in `assignment` (a dict: exam_name -> (time, venue)).
-    """
+    # Checks whether assigning a time and venue to an exam breaks any constraints
     overlaps = overlaps if overlaps is not None else DefaultOL
     candidate_time, candidate_venue = candidate
 
@@ -29,22 +25,14 @@ def is_valid(exam_name, candidate, assignment, overlaps = None):
 
 
 def backtrack(assignment, domains, exam_order, step_counter):
-    """
-    Recursive backtracking search.
-
-    assignment: dict of exam_name -> (time, venue) assigned so far
-    domains: dict of exam_name -> list of valid (time, venue) options
-    exam_order: list of exam names, defining the fixed assignment order
-    step_counter: a list with one element [count], used so the count
-                   persists across recursive calls (mutable trick)
-    """
+    # Uses recursive backtracking to assign a valid time and venue to each exam while counting the search steps.
 
     # Base case: every exam has been assigned -> solution found
     if len(assignment) == len(exam_order):
         return assignment
 
     # Pick the next unassigned exam (fixed order, since this is the
-    # SIMPLE strategy - no MRV/heuristics here, that's Member 2's job)
+    # SIMPLE backtracking strategy - no MRV/heuristics here, that's Raeez's job)
     current_exam = exam_order[len(assignment)]
 
     for candidate in domains[current_exam]:
@@ -62,14 +50,7 @@ def backtrack(assignment, domains, exam_order, step_counter):
     return None  # no value worked for this exam - trigger backtracking above
 
 def solve():
-    """
-    Sets up the CSP and runs basic backtracking search.
-
-    Returns a tuple: (assignment, step_count)
-        assignment: dict of exam_name -> (time, venue), or None if no
-                     solution exists
-        step_count: total number of assignment attempts made
-    """
+    # Runs the basic backtracking solver and returns the timetable and total search steps.
     domains = generate_domains()
     exam_order = list(EXAMS.keys())
     assignment = {}
